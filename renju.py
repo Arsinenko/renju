@@ -1,9 +1,9 @@
 import pygame
-import time
 
 
 def msg(text: str):
     # вывод сообщения на экран
+    pygame.time.delay(1000)
     screen.fill(pygame.Color("black"))
     text = pygame.font.Font(None, 36).render(text, True, pygame.Color("white"))
     text_rect = text.get_rect(center=screen.get_rect().center)
@@ -16,9 +16,9 @@ def clicked(x_pos: int, y_pos: int) -> list:
     # проверяет элемент массива по которому нажали
     for i in range(15):
         for j in range(15):
-            if x_pos in range(i * cell_size + 2, i * cell_size + 2 + cell_size) and y_pos in range(j * cell_size + 2,
-                                                                                                   j * cell_size + 2 + 35):
-                board[i][j] = 'X' if first_player else "O"
+            if x_pos in range(i * cell_size + 2, i * cell_size + 2 + cell_size) and y_pos in range(j * cell_size + 2, j * cell_size + 2 + 35):
+                if board[i][j] == '.':
+                    board[i][j] = 'X' if first_player else "O"
 
                 return [i, j]  # возвращаем элемент массива
 
@@ -58,6 +58,12 @@ def win_line(line: list) -> bool:
         else:
             break
     return True if count_left + count_right >= 4 else False
+def switch_player(board: list, row: int, col: int) -> bool:
+    if board[row][col] == 'X':
+        return False
+    if board[row][col] == 'O':
+        return True
+
 
 
 pygame.init()
@@ -97,10 +103,11 @@ while not game_over:
             diagonal2 = [get_sign(board, x + i, y - i) for i in range(-4, 5)]
             # проверка на победу
             if win_line(vertical) or win_line(horizontal) or win_line(diagonal) or win_line(diagonal2):
-                msg("Game over!!!")
-                time.sleep(5)
+                msg("Game over!!! X won" if board[x][y] == 'X' else "Game over!!!\n O won")
+
                 game_over = True
-            first_player = not first_player
+            first_player = switch_player(board, x, y)  # переключение игрока
+            
 
     screen.fill(pygame.Color("white"))
     print_board()
