@@ -16,7 +16,7 @@ def clicked(x_pos: int, y_pos: int) -> list:
     # проверяет элемент массива по которому нажали
     for i in range(15):
         for j in range(15):
-            if x_pos in range(i * cell_size + 2, i * cell_size + 2 + cell_size) and y_pos in range(j * cell_size + 2, j * cell_size + 2 + 35):
+            if x_pos >= i * cell_size + 2 and x_pos <= i * cell_size + 2 + cell_size and y_pos >= j * cell_size + 2 and y_pos <= j * cell_size + 2 + cell_size:
                 if board[i][j] == '.':
                     board[i][j] = 'X' if first_player else "O"
 
